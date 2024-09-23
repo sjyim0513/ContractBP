@@ -26,16 +26,17 @@ contract CONTRACTNAME {
 }
 `;
 
-function generateGlobalVariables(globals: GlobalVariable[]): string { //모든 타입에 대해서 정의해야함 그리고 json 보내면 만들어진 .sol 파일이랑 artifacts 폴더 삭제하게 만들기
-  const mappings = globals.map(global => {
+function generateGlobalVariables(globals: GlobalVariable[]): string {
+  //모든 타입에 대해서 정의해야함 그리고 json 보내면 만들어진 .sol 파일이랑 artifacts 폴더 삭제하게 만들기
+  const mappings = globals.map((global) => {
     switch (global.type) {
-      case "mapping" :
+      case "mapping":
         if (global.initValue == undefined) {
           return `mapping(${global.params.from} => ${global.params.to}) public ${global.name};`;
         }
         return `mapping(${global.params.from} => ${global.params.to}) public ${global.name};`;
       case "staticArray":
-        console.log("왜? staticArray: ", global.params)
+        console.log("왜? staticArray: ", global.params);
         if (global.initValue == undefined) {
           return `${global.params.type}[${global.params.length}] public ${global.name};`;
         }
@@ -48,7 +49,11 @@ function generateGlobalVariables(globals: GlobalVariable[]): string { //모든 �
         const dynamicInitList = global.initValue.join(", ");
         return `${global.params.type}[] public ${global.name} = [${dynamicInitList}];`;
       case "struct":
-        const structFields = global.structFields!.map((field: StructField) => `${field.type} ${field.name};`).join(" ");
+        const structFields = global
+          .structFields!.map(
+            (field: StructField) => `${field.type} ${field.name};`
+          )
+          .join(" ");
         return `struct ${global.name} { ${structFields} };`;
       default:
         if (global.initValue == undefined) {
@@ -56,11 +61,15 @@ function generateGlobalVariables(globals: GlobalVariable[]): string { //모든 �
         }
         return `${global.type} public ${global.name} = ${global.initValue};`;
     }
-  })
+  });
   return mappings.join("\n  ");
 }
 
-function generateFunctionCode(name: string, params: { name: string, type: string }[], returnParams: { name: string, type: string }[]): string {
+function generateFunctionCode(
+  name: string,
+  params: { name: string; type: string }[],
+  returnParams: { name: string; type: string }[]
+): string {
   const template = functionTemplates[name];
   if (!template) {
     throw new Error(`Function template for ${name} not found`);
@@ -68,23 +77,46 @@ function generateFunctionCode(name: string, params: { name: string, type: string
   return template(params, returnParams);
 }
 
-async function generateAndCompileContract(license: string, version: string, contractName: string, globals: GlobalVariable[], functions: { [key: string]: { params: { name: string, type: string }[], return: { name: string, type: string }[] } }) {
+async function generateAndCompileContract(
+  license: string,
+  version: string,
+  contractName: string,
+  globals: GlobalVariable[],
+  functions: {
+    [key: string]: {
+      params: { name: string; type: string }[];
+      return: { name: string; type: string }[];
+    };
+  }
+) {
+  //generate global variables
   const globalVariables = generateGlobalVariables(globals);
-  const functionCodes = Object.entries(functions).map(([name, { params, return: returnParams }]) => generateFunctionCode(name, params, returnParams));
-  const contractSource = BASE_CONTRACT_TEMPLATE.replace('LICENSE', license).replace('VERSION', version).replace('CONTRACTNAME', contractName).replace('GLOBAL_VARIABLES', globalVariables).replace('FUNCTION_BODY', functionCodes.join("\n  "));
+  //generate functions
+  const functionCodes = Object.entries(functions).map(
+    ([name, { params, return: returnParams }]) =>
+      generateFunctionCode(name, params, returnParams)
+  );
+  const contractSource = BASE_CONTRACT_TEMPLATE.replace("LICENSE", license)
+    .replace("VERSION", version)
+    .replace("CONTRACTNAME", contractName)
+    .replace("GLOBAL_VARIABLES", globalVariables)
+    .replace("FUNCTION_BODY", functionCodes.join("\n  "));
 
   const contractPath = path.join(__dirname, `../contracts/${contractName}.sol`);
   fs.writeFileSync(contractPath, contractSource);
 
   await run("compile");
 
-  const artifactPath = path.join(__dirname, `../artifacts/contracts/${contractName}.sol/${contractName}.json`);
+  const artifactPath = path.join(
+    __dirname,
+    `../artifacts/contracts/${contractName}.sol/${contractName}.json`
+  );
   const artifact = JSON.parse(fs.readFileSync(artifactPath, "utf8"));
   const solSource = fs.readFileSync(contractPath, "utf8");
 
   return {
     ...artifact,
-    source: solSource
+    source: solSource,
   };
 }
 

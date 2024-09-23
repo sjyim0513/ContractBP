@@ -1,0 +1,16 @@
+{
+  "List": [
+    {
+      "name": "No License",
+      "identifier": "None"
+    },
+    {
+      "name": "The Unlicense",
+      "identifier": "UNLICENSE"
+    },
+    {
+      "name": "MIT License",
+      "identifier": "MIT"
+    }
+  ]
+}

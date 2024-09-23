@@ -1,46 +1,42 @@
 {
-    "license": "UNLICENSED",
-    "version": "0.8.24",
-    "contractName": "YIM",
-    "globals": [
-        {
-            "name": "_balances", 
-            "type": "mapping",
-            "params": {"from": "address", "to": "uint256"},
-            "initValue": "100"
-        },
-        {
-            "name": "staticArray", 
-            "type": "staticArray",
-            "params": {"type": "uint256", "length": "5"},
-            "initValue": ["100", "200", "300"]
-        },
-        {
-            "name": "dynamicArray", 
-            "type": "dynamicArray",
-            "params": {"type": "uint256"},
-            "initValue": ["3", "2", "1"]
-        }
-    ],
-    "functions": {
-        "getTokenBalance": {
-            "params" : [
-                { "name": "tokenAddress", "type": "address" },
-                { "name": "account", "type": "address" }
-            ],
-            "return" : [
-                { "name": "balance", "type": "uint256"}
-            ]
-        },
-        "getTokenInfo": {
-            "params" : [
-                { "name": "tokenAddress", "type": "address" }
-            ],
-            "return" : [
-                { "name": "name", "type": "string"},
-                { "name": "symbol", "type": "string"},
-                { "name": "decimals", "type": "uint8"}
-            ]
-        }
-      }
+  "license": "UNLICENSED",
+  "version": "0.8.24",
+  "contractName": "test",
+  "globals": [
+    {
+      "name": "_balances",
+      "type": "mapping",
+      "params": { "from": "address", "to": "uint256" },
+      "initValue": "100"
+    },
+    {
+      "name": "staticArray",
+      "type": "staticArray",
+      "params": { "type": "uint256", "length": "5" },
+      "initValue": ["100", "200", "300"]
+    },
+    {
+      "name": "dynamicArray",
+      "type": "dynamicArray",
+      "params": { "type": "uint256" },
+      "initValue": ["3", "2", "1"]
+    }
+  ],
+  "functions": {
+    "getTokenBalance": {
+      "params": [
+        { "name": "tokenAddress", "type": "address" },
+        { "name": "account", "type": "address" }
+      ],
+      "return": [{ "name": "balance", "type": "uint256" }]
+    },
+    "getTokenInfo": {
+      "params": [{ "name": "tokenAddress", "type": "address" }],
+      "return": [
+        { "name": "name", "type": "string" },
+        { "name": "symbol", "type": "string" },
+        { "name": "decimals", "type": "uint8" }
+      ]
+    }
   }
+}

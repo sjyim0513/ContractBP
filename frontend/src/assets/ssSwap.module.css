@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+.inlineblock {
+  display: inline-block;
+  margin-top: 10px;
+}
+
 .assetSelectBalance {
   flex: 1;
   display: flex;
@@ -35,9 +40,11 @@
 }
 
 .displaySelectContainer {
+  display: inline-block;
   background-color: aquamarine;
   cursor: pointer;
-  border-radius: 16px;
+  margin-right: 5px;
+  border-radius: 12px;
 }
 
 .assetSelectMenuItem {
@@ -87,15 +94,15 @@
   text-align: center;
   font-size: 20px;
   padding: 0; /* Remove padding if present */
-  border: 2px solid black; 
+  border: 2px solid black;
 }
 
 .STATUS {
   flex: 1;
-  background-color:gray;
+  background-color: gray;
   padding: 20px;
   border-top-left-radius: 8px; /* Optional: To add some border radius to the items */
-  border-right: 2px solid black; 
+  border-right: 2px solid black;
 }
 .BP {
   flex: 3;
@@ -111,5 +118,5 @@
   justify-content: center;
   align-items: center;
   border-top-right-radius: 8px; /* Optional: To add some border radius to the items */
-  border-left: 2px solid black; 
+  border-left: 2px solid black;
 }
