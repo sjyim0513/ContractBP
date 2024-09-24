@@ -17,11 +17,20 @@ app.post("/compile", async (req, res) => {
   // console.log("함수\n", functions)
 
   try {
-    const compiledContract = await generateAndCompileContract(license, version, contractName, globals, functions);
+    console.log("license", license);
+    console.log("version", version);
+    console.log("contractName", contractName);
+    const compiledContract = await generateAndCompileContract(
+      license,
+      version,
+      contractName,
+      globals,
+      functions
+    );
     res.json({
       abi: compiledContract.abi,
       bytecode: compiledContract.bytecode,
-      source: compiledContract.source
+      source: compiledContract.source,
     });
   } catch (error) {
     res.status(500).json({ error: "500이여" });

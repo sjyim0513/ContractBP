@@ -23,12 +23,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { Construction, Search } from "@mui/icons-material";
 
-interface License {
-  name: string;
-  identifier: string;
-}
+import { License, fun, global, Store } from "./assets/type/types.ts";
+
+//------------Store------------
+
+const store: Store = {
+  license: "",
+  version: "",
+  contractName: "",
+  functions: [],
+  globals: [],
+};
+
+//------------Local Storage Key------------
 
 const CUSTOM_CHAINS_KEY = "customChains";
 const CUSTOM_LICENSES_KEY = "customLicenses";
@@ -77,7 +86,6 @@ const loadCustomLicenses = (): License[] => {
   return storedLicenses ? JSON.parse(storedLicenses) : [];
 };
 
-// Function to merge custom chains with default chains
 const getMergedLicenses = (): License[] => {
   const customChains = loadCustomLicenses();
   const defaultChains = licenseList.List;
@@ -85,6 +93,8 @@ const getMergedLicenses = (): License[] => {
   console.log("defaultChains", defaultChains);
   return [...customChains, ...defaultChains];
 };
+
+//------------Local Storage Key------------
 
 async function connectWallet(): Promise<string | undefined> {
   if (!window.ethereum) {
@@ -637,7 +647,6 @@ function VersionSelect({ value, versionList, onSelect }) {
   const [filteredAssetOptions, setFilteredAssetOptions] = useState<string[]>(
     []
   );
-  const [version, setVersion] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const openSearch = () => {
@@ -665,10 +674,11 @@ function VersionSelect({ value, versionList, onSelect }) {
     setSearch(event.target.value);
   };
 
-  const setSelectedChain = (asset: Chain) => {
+  const setSelectedVersion = (asset: string) => {
     setSearch("");
     setOpen(false);
     onSelect(asset);
+    store.version = asset;
   };
 
   const onClose = () => {
@@ -702,7 +712,7 @@ function VersionSelect({ value, versionList, onSelect }) {
       <MenuItem
         key={idx}
         className={classes.assetSelectMenu}
-        onClick={() => setSelectedChain(asset)}
+        onClick={() => setSelectedVersion(asset)}
         style={{ margin: "1px 0" }}
       >
         <div>
@@ -807,8 +817,8 @@ function LicenseSelect({ value, LicenseList, onSelect }) {
   const [addCustomOpen, setAddCustomOpen] = useState(false);
   const [delCustomOpen, setDeleteCustomOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [licenseName, setLicenseName] = useState<String>("");
-  const [licenseIdentifier, setLicensIdentifier] = useState<String>("");
+  const [licenseName, setLicenseName] = useState<string>("");
+  const [licenseIdentifier, setLicensIdentifier] = useState<string>("");
   const [filteredAssetOptions, setFilteredAssetOptions] = useState<License[]>(
     []
   );
@@ -849,6 +859,8 @@ function LicenseSelect({ value, LicenseList, onSelect }) {
     setOpen(false);
     console.log("asset", asset);
     onSelect(asset);
+    store.license = asset.identifier;
+    console.log("store", store);
   };
 
   const addCustomChain = () => {
@@ -1264,7 +1276,7 @@ const App: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(testJSON),
+        body: JSON.stringify(store),
       });
 
       const result = await response.json();
