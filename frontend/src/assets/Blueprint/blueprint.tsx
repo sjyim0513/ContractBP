@@ -2,6 +2,10 @@ import React, { useState } from "react";
 
 import { functionList } from "../../../../functionList";
 
+import Circle from "../component/baseCircle";
+
+import baseBP from "../component/baseAsset";
+
 //function list를 리스트에 추가하고, 마지막에는 create custom function 추가하기 -> 검색할 때는 마지막꺼는 안 되게
 
 // ContextMenu 컴포넌트
@@ -53,6 +57,8 @@ const BP: React.FC = () => {
       onClick={handleClick}
     >
       {showMenu && <ContextMenu x={menuPosition.x} y={menuPosition.y} />}
+      <Circle></Circle>
+      <baseBP name="he" param="hee" return="heeee"></baseBP>
     </div>
   );
 };
