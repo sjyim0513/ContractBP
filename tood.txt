@@ -1,0 +1,26 @@
+구조체 트리
+
+Store
+    - license
+    - version
+    - contractName
+    - functions[]
+        - name
+        - params[]
+            - name
+            - type
+        - return[]
+            - name
+            - type
+        - var[]
+    - globals[]
+        - name
+        - type
+        - initValue
+
+
+함수 이름이 같으면 안된다고 말하기 -> 구조체 안의 함수 이름이랑 같은지 체크
+
+모든 기술적 기능을 모아둔 파일 하나 생성
+
+변수는 다 객체로 가져오기 -> 그래야 해당 객체 안에 있는 함수들에 접근 가능

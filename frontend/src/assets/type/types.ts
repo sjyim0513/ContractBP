@@ -7,6 +7,7 @@ interface fun {
   name: string;
   params: { name: string; type: string }[];
   return: { name: string; type: string }[];
+  var: { name: string; type: string }[];
 }
 
 interface global {
