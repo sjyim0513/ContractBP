@@ -84,8 +84,6 @@
 
 .BlueprintContainer {
   border-radius: 16px;
-  min-width: 500px;
-  min-height: 800px;
   background-color: lightblue;
   display: flex;
   flex-direction: row;
@@ -99,24 +97,21 @@
 
 .STATUS {
   flex: 1;
-  background-color: gray;
+  background-color: #3a3a3a;
   padding: 20px;
   border-top-left-radius: 8px; /* Optional: To add some border radius to the items */
-  border-right: 2px solid black;
 }
 .BP {
   flex: 3;
   background-color: lightgray;
-  padding: 20px;
 }
 
 .CODE {
   flex: 1;
-  background-color: gray;
+  background-color: #3a3a3a;
   padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-top-right-radius: 8px; /* Optional: To add some border radius to the items */
-  border-left: 2px solid black;
 }
