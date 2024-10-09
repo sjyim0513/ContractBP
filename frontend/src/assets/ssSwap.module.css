@@ -7,7 +7,7 @@
 }
 
 .inlineblock {
-  display: inline-block;
+  display: block;
   margin-top: 10px;
 }
 
@@ -83,32 +83,32 @@
 }
 
 .BlueprintContainer {
+  height: 100%;
   border-radius: 16px;
   background-color: lightblue;
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
   justify-content: space-between;
   align-items: stretch;
   text-align: center;
   font-size: 20px;
   padding: 0; /* Remove padding if present */
-  border: 2px solid black;
 }
 
 .STATUS {
   flex: 1;
-  background-color: #3a3a3a;
+  background-color: #181818;
   padding: 20px;
   border-top-left-radius: 8px; /* Optional: To add some border radius to the items */
 }
 .BP {
   flex: 3;
-  background-color: lightgray;
 }
 
 .CODE {
   flex: 1;
-  background-color: #3a3a3a;
+  background-color: #181818;
   padding: 20px;
   display: flex;
   justify-content: center;

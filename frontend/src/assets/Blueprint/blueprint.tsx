@@ -135,12 +135,11 @@ const BP: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp} // 마우스가 컨테이너를 벗어나면 드래그 중지
-      // onMouseOver={handleDragScrollPrevent}
+      onMouseOver={handleDragScrollPrevent}
       style={{
         width: "100%",
-        height: "400px",
+        height: "100%",
         overflow: "hidden",
-        border: "1px solid black",
         position: "relative",
         backgroundColor: "#262626",
       }}

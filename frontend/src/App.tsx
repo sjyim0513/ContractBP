@@ -1361,8 +1361,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div style={{height:"100vh", backgroundColor: "#272727", display: "flex", flexDirection: "column"}}>
+      <span>
         <button onClick={handleConnectWallet}>Connect Wallet</button>
         <button onClick={handleSendData} disabled={!account}>
           Send Data
@@ -1371,38 +1371,38 @@ const App: React.FC = () => {
           Deploy Contract
         </button>
         {`Connected Wallet: ${account}`}
-      </div>
-      <div className={classes.inlineblock}>
-        <AssetSelect
-          value={currentChain}
-          assetOptions={getMergedChains()}
-          onSelect={onChainSelect}
-        />
-        <VersionSelect
-          value={currentVersion}
-          versionList={versionList.List}
-          onSelect={onVersionSelect}
-        />
-        <LicenseSelect //라이센스 직접 추가도 가능하게.
-          value={currentLicense?.name}
-          LicenseList={getMergedLicenses()}
-          onSelect={onLicenseSelect}
-        />
-      </div>
-      <pre
-        style={{
-          whiteSpace: "pre-wrap",
-          background: "#f4f4f4",
-          padding: "10px",
-          borderRadius: "5px",
-          maxWidth: "600px",
-          overflow: "auto",
-        }}
-      >
-        {sourceCode}
-      </pre>
-      <div>{`Contract Address: ${contractAddress}`}</div>
-      <BPbase />
+      </span>
+        <div className={classes.inlineblock}>
+          <AssetSelect
+            value={currentChain}
+            assetOptions={getMergedChains()}
+            onSelect={onChainSelect}
+          />
+          <VersionSelect
+            value={currentVersion}
+            versionList={versionList.List}
+            onSelect={onVersionSelect}
+          />
+          <LicenseSelect //라이센스 직접 추가도 가능하게.
+            value={currentLicense?.name}
+            LicenseList={getMergedLicenses()}
+            onSelect={onLicenseSelect}
+          />
+          <pre
+          style={{
+            whiteSpace: "pre-wrap",
+            background: "#f4f4f4",
+            padding: "10px",
+            borderRadius: "5px",
+            maxWidth: "600px",
+            overflow: "auto",
+          }}
+          >
+          {sourceCode}
+          </pre>
+          {`Contract Address: ${contractAddress}`}
+        </div>
+        <BPbase />
     </div>
   );
 };

@@ -12,13 +12,13 @@ import classes from '../ssSwap.module.css'
 function BPbase() {
     return (
         <div className={classes.BlueprintContainer}>
-            <div className={`${classes.BlueprintPlace} ${classes.STATUS}`}>
+            <div className={`${classes.STATUS}`}>
             <Params/>
             </div>
-            <div className={`${classes.BlueprintPlace} ${classes.BP}`}>
+            <div className={`${classes.BP}`}>
             <BP/>
             </div>
-            <div className={`${classes.BlueprintPlace} ${classes.CODE}`}>
+            <div className={`${classes.CODE}`}>
             <Code/>
             </div>
         </div>
