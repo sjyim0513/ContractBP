@@ -9,27 +9,57 @@ import baseBP from "../component/baseAsset";
 import classes from "./blueprint.module.css";
 
 //function list를 리스트에 추가하고, 마지막에는 create custom function 추가하기 -> 검색할 때는 마지막꺼는 안 되게
-
-// ContextMenu 컴포넌트
 const ContextMenu: React.FC<{ x: number; y: number }> = ({ x, y }) => {
   return (
     <div
-      style={{
-        position: "absolute",
-        top: y,
-        left: x,
-        backgroundColor: "white",
-        border: "1px solid #ccc",
-        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
-        padding: "10px",
-        zIndex: 1000,
+    id="menu"
+    style={{
+      position: "fixed",
+      left: x,
+      top: y,
+      backgroundColor: "#515151",
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+      padding: "5px",
+      zIndex: 1000,
       }}
     >
-      <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
-        <li style={{ padding: "5px 10px" }}>Option 1</li>
-        <li style={{ padding: "5px 10px" }}>Option 2</li>
-        <li style={{ padding: "5px 10px" }}>Option 3</li>
-      </ul>
+      <div
+        style={{
+          backgroundColor:"#181818",
+          color:"#d7d7d7",
+        }}
+      >
+        검색
+      </div>
+      <div
+        style={{
+          backgroundColor:"#181818",
+          marginTop:"5px",
+        }}
+      >
+        <div
+          style={{
+            color:"#d7d7d7",
+            padding: "2px"
+          }}
+        >
+          함수
+        </div>
+        <hr 
+          style={{ 
+            border: "1px solid #d7d7d7", 
+            margin: "1px 8px 1px 8px" // 쉼표 대신 공백 사용
+          }} 
+        />
+        <div
+          style={{
+            color:"#d7d7d7",
+            padding: "2px",
+          }}
+        >
+          함수리스트
+        </div>
+      </div>
     </div>
   );
 };
@@ -37,129 +67,88 @@ const ContextMenu: React.FC<{ x: number; y: number }> = ({ x, y }) => {
 const BP: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-  const [scale, setScale] = useState<number>(1);
-  const [translateX, setTranslateX] = useState<number>(0);
-  const [translateY, setTranslateY] = useState<number>(0);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [startX, setStartX] = useState<number>(0);
-  const [startY, setStartY] = useState<number>(0);
-
+  const [scale, setScale] = useState(1);
+  const [translate, setTranslate] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // 줌(휠) 핸들러
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
     if (!containerRef.current) return;
 
     const containerRect = containerRef.current.getBoundingClientRect();
-
-    const mouseX = event.clientX - containerRect.left; // 마우스 커서의 X 위치
-    const mouseY = event.clientY - containerRect.top; // 마우스 커서의 Y 위치
-
+    const mouseX = event.clientX - containerRect.left;
+    const mouseY = event.clientY - containerRect.top;
     const zoomSpeed = 0.1;
-
     const zoomDirection = event.deltaY < 0 ? 1 : -1;
 
-    const previousScale = scale;
-    let newScale = scale + zoomSpeed * zoomDirection;
+    const newScale = Math.max(0.4, Math.min(scale + zoomSpeed * zoomDirection, 1));
+    const scaleRatio = newScale / scale;
 
-    // 최소, 최대 확대/축소 비율 설정
-    newScale = Math.max(0.2, Math.min(newScale, 3));
-
-    const newTranslateX =
-      translateX - (mouseX / previousScale - mouseX / newScale);
-    const newTranslateY =
-      translateY - (mouseY / previousScale - mouseY / newScale);
-
-    console.log("previous", previousScale);
-    console.log("translateX", mouseX, translateX);
-    console.log("translateY", mouseY, translateY);
-
-    // 상태 업데이트
+    setTranslate({
+      x: translate.x - (mouseX / scale - mouseX / newScale),
+      y: translate.y - (mouseY / scale - mouseY / newScale),
+    });
     setScale(newScale);
-    setTranslateX(newTranslateX);
-    setTranslateY(newTranslateY);
   };
 
-  // 드래그 시작
-  const handleMouseDown = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    event.preventDefault();
-    setIsDragging(true);
-    setStartX(event.clientX - translateX);
-    setStartY(event.clientY - translateY);
-  };
-
-  // 드래그 이동
-  const handleMouseMove = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (!isDragging) return;
-
-    // 마우스가 움직일 때 이동값 계산
-    const newTranslateX = event.clientX - startX;
-    const newTranslateY = event.clientY - startY;
-
-    setTranslateX(newTranslateX);
-    setTranslateY(newTranslateY);
-  };
-
-  // 드래그 종료
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleContextMenu = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setMenuPosition({ x: event.pageX, y: event.pageY });
-    setShowMenu(true);
-  };
-
-  const handleDragScrollPrevent = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (isDragging) {
-      event.preventDefault();
+  // 마우스 다운 핸들러
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setShowMenu(false);
+    if (event.button === 2) {
+      setStartPos({ x: event.clientX, y: event.clientY });
+      setIsDragging(true);
     }
   };
 
-  const handleClick = () => {
-    setShowMenu(false);
+  // 마우스 이동 핸들러 (드래그)
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isDragging) {
+      setTranslate({
+        x: event.clientX - startPos.x,
+        y: event.clientY - startPos.y,
+      });
+    }
+  };
+
+  // 마우스 업 핸들러 (우클릭 메뉴 표시)
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isDragging) setIsDragging(false);
+
+    if (e.button === 2 && startPos.x === e.clientX && startPos.y === e.clientY) {
+      setMenuPosition({ x: e.clientX, y: e.clientY });
+      setShowMenu(true);
+    }
+  };
+
+  // 기본 우클릭 메뉴 방지
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault();
   };
 
   return (
     <div
-      ref={containerRef}
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp} // 마우스가 컨테이너를 벗어나면 드래그 중지
-      onMouseOver={handleDragScrollPrevent}
-      style={{
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-        position: "relative",
-        backgroundColor: "#262626",
-      }}
+      onContextMenu={handleContextMenu}
+      style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#262626", overflow: "hidden" }}
     >
       <div
+        ref={containerRef}
         style={{
-          transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
-          transformOrigin: "0 0", // 좌상단을 기준으로 크기와 위치 조정
+          transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+          transformOrigin: "0 0",
         }}
       >
-        <div
-          className={classes.blueprintPlace}
-          onContextMenu={handleContextMenu}
-          onClick={handleClick}
-        >
-          {showMenu && <ContextMenu x={menuPosition.x} y={menuPosition.y} />}
-          <Circle></Circle>
-          <baseBP name="he" param="hee" return="heeee"></baseBP>
+        <div className={classes.blueprintPlace}>
+          <Circle />
         </div>
       </div>
+
+      {showMenu && <ContextMenu x={menuPosition.x} y={menuPosition.y} />}
     </div>
   );
 };

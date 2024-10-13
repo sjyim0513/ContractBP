@@ -12,9 +12,7 @@ import classes from '../ssSwap.module.css'
 function BPbase() {
     return (
         <div className={classes.BlueprintContainer}>
-            <div className={`${classes.STATUS}`}>
             <Params/>
-            </div>
             <div className={`${classes.BP}`}>
             <BP/>
             </div>
@@ -25,4 +23,4 @@ function BPbase() {
     )
 }
 
-export default BPbase;
+export default BPbase; 
