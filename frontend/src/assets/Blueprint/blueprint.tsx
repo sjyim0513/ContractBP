@@ -12,48 +12,48 @@ import classes from "./blueprint.module.css";
 const ContextMenu: React.FC<{ x: number; y: number }> = ({ x, y }) => {
   return (
     <div
-    id="menu"
-    style={{
-      position: "fixed",
-      left: x,
-      top: y,
-      backgroundColor: "#515151",
-      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
-      padding: "5px",
-      zIndex: 1000,
+      id="menu"
+      style={{
+        position: "fixed",
+        left: x,
+        top: y,
+        backgroundColor: "#515151",
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+        padding: "5px",
+        zIndex: 1000,
       }}
     >
       <div
         style={{
-          backgroundColor:"#181818",
-          color:"#d7d7d7",
+          backgroundColor: "#181818",
+          color: "#d7d7d7",
         }}
       >
         검색
       </div>
       <div
         style={{
-          backgroundColor:"#181818",
-          marginTop:"5px",
+          backgroundColor: "#181818",
+          marginTop: "5px",
         }}
       >
         <div
           style={{
-            color:"#d7d7d7",
-            padding: "2px"
+            color: "#d7d7d7",
+            padding: "2px",
           }}
         >
           함수
         </div>
-        <hr 
-          style={{ 
-            border: "1px solid #d7d7d7", 
-            margin: "1px 8px 1px 8px" // 쉼표 대신 공백 사용
-          }} 
+        <hr
+          style={{
+            border: "1px solid #d7d7d7",
+            margin: "1px 8px 1px 8px", // 쉼표 대신 공백 사용
+          }}
         />
         <div
           style={{
-            color:"#d7d7d7",
+            color: "#d7d7d7",
             padding: "2px",
           }}
         >
@@ -83,7 +83,10 @@ const BP: React.FC = () => {
     const zoomSpeed = 0.1;
     const zoomDirection = event.deltaY < 0 ? 1 : -1;
 
-    const newScale = Math.max(0.4, Math.min(scale + zoomSpeed * zoomDirection, 1));
+    const newScale = Math.max(
+      0.4,
+      Math.min(scale + zoomSpeed * zoomDirection, 1)
+    );
     const scaleRatio = newScale / scale;
 
     setTranslate({
@@ -94,7 +97,9 @@ const BP: React.FC = () => {
   };
 
   // 마우스 다운 핸들러
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseDown = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     setShowMenu(false);
     if (event.button === 2) {
       setStartPos({ x: event.clientX, y: event.clientY });
@@ -103,7 +108,9 @@ const BP: React.FC = () => {
   };
 
   // 마우스 이동 핸들러 (드래그)
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseMove = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     if (isDragging) {
       setTranslate({
         x: event.clientX - startPos.x,
@@ -116,7 +123,11 @@ const BP: React.FC = () => {
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (isDragging) setIsDragging(false);
 
-    if (e.button === 2 && startPos.x === e.clientX && startPos.y === e.clientY) {
+    if (
+      e.button === 2 &&
+      startPos.x === e.clientX &&
+      startPos.y === e.clientY
+    ) {
       setMenuPosition({ x: e.clientX, y: e.clientY });
       setShowMenu(true);
     }
@@ -134,8 +145,17 @@ const BP: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onContextMenu={handleContextMenu}
-      style={{ width: "100%", height: "100%", position: "relative", backgroundColor: "#262626", overflow: "hidden" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        backgroundColor: "#262626",
+        overflow: "hidden",
+      }}
     >
+      <div
+        style={{ backgroundColor: "green", width: "100px", height: "100px" }}
+      ></div>
       <div
         ref={containerRef}
         style={{
@@ -143,11 +163,9 @@ const BP: React.FC = () => {
           transformOrigin: "0 0",
         }}
       >
-        <div className={classes.blueprintPlace}>
-          <Circle />
-        </div>
+        <div className={classes.blueprintPlace}></div>
       </div>
-
+      <Circle />
       {showMenu && <ContextMenu x={menuPosition.x} y={menuPosition.y} />}
     </div>
   );

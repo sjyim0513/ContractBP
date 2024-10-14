@@ -11,7 +11,7 @@ import testJSON from "../../example.json";
 import { getAllChains } from "./assets/chainList/allChains.ts";
 import versionList from "./assets/solidity_Lists/solidity_version.json";
 import licenseList from "./assets/solidity_Lists/solidity_license.json";
-import BPbase from "./assets/Main/main.tsx";
+import BPbase from "./assets/bpMain/bpMain.tsx";
 
 import classes from "./assets/ssSwap.module.css";
 
@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import { Construction, Search } from "@mui/icons-material";
 
-import { License, fun, global, Store } from "./assets/type/types.ts";
+import { License, fun, global, Store } from "../type/types.ts";
 
 //------------Store------------
 
@@ -1361,7 +1361,14 @@ const App: React.FC = () => {
   };
 
   return (
-    <div style={{height:"100vh", backgroundColor: "#272727", display: "flex", flexDirection: "column"}}>
+    <div
+      style={{
+        height: "100vh",
+        backgroundColor: "#272727",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <span>
         <button onClick={handleConnectWallet}>Connect Wallet</button>
         <button onClick={handleSendData} disabled={!account}>
@@ -1372,23 +1379,23 @@ const App: React.FC = () => {
         </button>
         {`Connected Wallet: ${account}`}
       </span>
-        <div className={classes.inlineblock}>
-          <AssetSelect
-            value={currentChain}
-            assetOptions={getMergedChains()}
-            onSelect={onChainSelect}
-          />
-          <VersionSelect
-            value={currentVersion}
-            versionList={versionList.List}
-            onSelect={onVersionSelect}
-          />
-          <LicenseSelect //라이센스 직접 추가도 가능하게.
-            value={currentLicense?.name}
-            LicenseList={getMergedLicenses()}
-            onSelect={onLicenseSelect}
-          />
-          <pre
+      <div className={classes.inlineblock}>
+        <AssetSelect
+          value={currentChain}
+          assetOptions={getMergedChains()}
+          onSelect={onChainSelect}
+        />
+        <VersionSelect
+          value={currentVersion}
+          versionList={versionList.List}
+          onSelect={onVersionSelect}
+        />
+        <LicenseSelect //라이센스 직접 추가도 가능하게.
+          value={currentLicense?.name}
+          LicenseList={getMergedLicenses()}
+          onSelect={onLicenseSelect}
+        />
+        <pre
           style={{
             whiteSpace: "pre-wrap",
             background: "#f4f4f4",
@@ -1397,12 +1404,12 @@ const App: React.FC = () => {
             maxWidth: "600px",
             overflow: "auto",
           }}
-          >
+        >
           {sourceCode}
-          </pre>
-          {`Contract Address: ${contractAddress}`}
-        </div>
-        <BPbase />
+        </pre>
+        {`Contract Address: ${contractAddress}`}
+      </div>
+      <BPbase />
     </div>
   );
 };

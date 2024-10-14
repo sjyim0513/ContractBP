@@ -81,37 +81,3 @@
   width: auto;
   margin-top: 15px;
 }
-
-.BlueprintContainer {
-  height: 100%;
-  border-radius: 16px;
-  background-color: lightblue;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  justify-content: space-between;
-  align-items: stretch;
-  text-align: center;
-  font-size: 20px;
-  padding: 0; /* Remove padding if present */
-}
-
-.STATUS {
-  flex: 1;
-  background-color: #181818;
-  padding: 20px;
-  border-top-left-radius: 8px; /* Optional: To add some border radius to the items */
-}
-.BP {
-  flex: 3;
-}
-
-.CODE {
-  flex: 1;
-  background-color: #181818;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top-right-radius: 8px; /* Optional: To add some border radius to the items */
-}

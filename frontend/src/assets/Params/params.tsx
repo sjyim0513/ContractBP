@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
-import "./params.css"
+import "./params.css";
 
 function Params() {
   const [leftWidth, setLeftWidth] = useState(300); // 좌측 패널의 초기 너비
@@ -27,15 +27,14 @@ function Params() {
 
   return (
     <div className="container" ref={containerRef}>
-      <div className="panel left-panel" style={{ flexBasis: `${leftWidth}px` }} />
       <div
-        className="resizer"
-        onMouseDown={startResizing}
-        ref={resizerRef}
+        className="panel left-panel"
+        style={{ flexBasis: `${leftWidth}px` }}
       />
+      <div className="resizer" onMouseDown={startResizing} ref={resizerRef} />
       <div className="panel right-panel" />
     </div>
   );
-};
+}
 
 export default Params;
