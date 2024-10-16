@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 
-import { functionList } from "../../../../functionList";
-
 import Circle from "../component/baseCircle";
 
 import baseBP from "../component/baseAsset";

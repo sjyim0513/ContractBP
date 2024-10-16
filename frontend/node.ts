@@ -44,7 +44,7 @@ class Graph {
       const toNode = this.nodes[edge.toNodeId];
 
       // fromNode의 출력을 toNode의 입력으로 전달
-      fromNode.process(); // 먼저 fromNode를 처리하여 출력값 생성
+      fromNode.process(); // 먼저 fromNode를 처리하여 출력값 생성 -> 아웃풋에 저장
       toNode.inputs[edge.toPort] = fromNode.outputs[edge.fromPort]; // 출력 전달
     }
 
